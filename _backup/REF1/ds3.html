@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Corporativo - Web Development Agency</title>
+    
+    <!-- Google Fonts: Inter - Fonte séria, profissional e moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Cores de Fundo (Claro) */
+            --bg-light: #f4f4f5;
+            --bg-white: #ffffff;
+            
+            /* Tipografia e Textos */
+            --text-primary: #18181b; /* Muito escuro, quase preto, para máxima legibilidade no fundo claro */
+            --text-secondary: #52525b;
+            --text-white: #fafafa; /* Fontes puxando para o branco para seções de contraste */
+            
+            /* Cores de Acento / Bordas */
+            --accent-color: #2563eb; /* Azul corporativo e profissional */
+            --border-color: #e4e4e7;
+            
+            /* Sombras e Efeitos */
+            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.08);
+            
+            /* Tipografia Base */
+            --font-main: 'Inter', sans-serif;
+            
+            /* Espaçamentos */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+            
+            /* Bordas */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 32px;
+            
+            /* Transições */
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: all 0.3s ease;
+        }
+
+        /* Resets Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none; /* Esconde o cursor padrão para usar o customizado */
+        }
+
+        /* ----------------------------------------------------
+           CURSOR CUSTOMIZADO (Efeito Premium)
+        ---------------------------------------------------- */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--text-primary);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference; /* Cria um contraste maravilhoso onde passa */
+        }
+        .custom-cursor.hover {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* ----------------------------------------------------
+           LAYOUT & CONTAINER
+        ---------------------------------------------------- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-lg) 0;
+        }
+
+        /* Cabeçalho do Design System */
+        .ds-header {
+            padding: var(--space-xl) 0 var(--space-lg) 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-light) 100%);
+        }
+
+        .ds-header h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: var(--space-sm);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ds-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ----------------------------------------------------
+           TIPOGRAFIA
+        ---------------------------------------------------- */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .type-h1 { font-size: 4rem; }
+        .type-h2 { font-size: 3rem; }
+        .type-h3 { font-size: 2rem; }
+        .type-h4 { font-size: 1.5rem; }
+        .type-p-large { font-size: 1.125rem; color: var(--text-secondary); line-height: 1.7; }
+        .type-p-regular { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
+        .type-p-small { font-size: 0.875rem; color: var(--text-secondary); }
+
+        /* ----------------------------------------------------
+           CORES (PALETA)
+        ---------------------------------------------------- */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+        .color-card {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            background: var(--bg-white);
+            transition: var(--transition-smooth);
+            border: 1px solid var(--border-color);
+        }
+        .color-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+        }
+        .color-swatch {
+            height: 120px;
+            width: 100%;
+        }
+        .color-info {
+            padding: var(--space-md);
+        }
+        .color-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .color-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* ----------------------------------------------------
+           BOTÕES E EFEITO MAGNÉTICO
+        ---------------------------------------------------- */
+        .btn-wrapper {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            cursor: none; /* Cursor será o customizado */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: none;
+        }
+
+        /* Botão Primário com Swipe Preto/Acento */
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: var(--bg-white);
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+            border-radius: var(--radius-xl);
+        }
+        .btn-primary:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Botão Secundário */
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--text-primary);
+        }
+        .btn-secondary:hover {
+            color: var(--bg-white);
+        }
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--text-primary);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+            border-radius: var(--radius-xl);
+        }
+        .btn-secondary:hover::before {
+            transform: scaleY(1);
+            transform-origin: top;
+        }
+
+        /* Container do efeito Magnético */
+        .magnetic-wrap {
+            display: inline-block;
+        }
+
+        /* ----------------------------------------------------
+           CARDS DE UI E GLASSMORPHISM
+        ---------------------------------------------------- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .ui-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* Efeito de brilho que passa pelo card no hover */
+        .ui-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg);
+            transition: var(--transition-smooth);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ui-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--card-shadow-hover);
+            border-color: rgba(255, 255, 255, 1);
+        }
+        
+        .ui-card:hover::after {
+            animation: shine 1s forwards;
+        }
+
+        .ui-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--text-primary);
+            color: var(--bg-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-xs);
+            font-weight: 700;
+        }
+
+        @keyframes shine {
+            100% { left: 200%; }
+        }
+
+        /* ----------------------------------------------------
+           ELEMENTOS DE FORMULÁRIO
+        ---------------------------------------------------- */
+        .form-wrapper {
+            max-width: 600px;
+            background: var(--bg-white);
+            padding: var(--space-md);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+        .form-group {
+            margin-bottom: var(--space-sm);
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            transition: var(--transition-fast);
+            color: var(--text-primary);
+        }
+        .form-input:focus {
+            outline: none;
+            background: var(--bg-white);
+            border-color: var(--text-primary);
+            box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.05); /* Foco profissional e suave */
+        }
+
+        /* ----------------------------------------------------
+           FONTES "PUXANDO PARA O BRANCO" (SEÇÃO DE EXCEÇÃO PRETA)
+        ---------------------------------------------------- */
+        .dark-section {
+            background-color: var(--text-primary);
+            color: var(--text-white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg) var(--space-md);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+            z-index: 0;
+        }
+
+        .dark-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .dark-section h2 {
+            font-size: 3.5rem;
+            color: var(--text-white); /* Destacando o texto branco sobre o fundo preto/escuro */
+            margin-bottom: 1rem;
+        }
+        .dark-section p {
+            color: rgba(250, 250, 250, 0.7);
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ----------------------------------------------------
+           ANIMAÇÕES DE REVEAL NO SCROLL
+        ---------------------------------------------------- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cabeçalho da Seção */
+        .section-header {
+            margin-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--space-sm);
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+        }
+        .section-header h2 {
+            margin: 0;
+        }
+        .section-header span {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mouse Cursor Element -->
+    <div class="custom-cursor"></div>
+
+    <header class="ds-header">
+        <div class="container">
+            <h1>Design System</h1>
+            <p>Criado para transmitir <strong>Credibilidade, Precisão e Profissionalismo</strong> em uma agência de desenvolvimento, com ênfase em layouts claros e interações imaculadas.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- 01 Tipografia -->
+        <section class="reveal">
+            <div class="section-header">
+                <span>01</span>
+                <h2>Tipografia</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md);">
+                <div>
+                    <h3 style="font-size: 9rem; line-height: 1; margin: 0;">Aa</h3>
+                    <p class="type-p-large" style="margin-top: 1rem;"><strong>Inter</strong><br>Séria, legível e corporativa. Perfeita para sistemas de alta performance.</p>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
+                    <div class="type-h1">Heading 1</div>
+                    <div class="type-h2">Heading 2</div>
+                    <div class="type-h3">Heading 3</div>
+                    <div class="type-h4">Heading 4</div>
+                    <div class="type-p-large">Texto Grande: Desenvolvemos plataformas digitais escaláveis, rápidas e orientadas ao usuário final.</div>
+                    <div class="type-p-regular">Texto Regular: Especialistas em criar identidades e sistemas robustos. Utilizamos arquiteturas modernas para que a tecnologia sirva o crescimento do seu negócio ininterruptamente.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02 Cores -->
+        <section class="reveal">
+            <div class="section-header">
+                <span>02</span>
+                <h2>Grelha de Cores</h2>
+            </div>
+            <p class="type-p-regular" style="margin-bottom: 2rem;">Trabalhando com um <strong>fundo claro limpo</strong> e cores baseadas no cinza neutro escuro, a interface respira sofisticação.</p>
+            <div class="color-grid">
+                <div class="color-card interactive-element">
+                    <div class="color-swatch" style="background-color: var(--bg-light);"></div>
+                    <div class="color-info">
+                        <h4>Background Claro</h4>
+                        <p>#f4f4f5 (Base App)</p>
+                    </div>
+                </div>
+                <div class="color-card interactive-element">
+                    <div class="color-swatch" style="background-color: var(--bg-white); border-bottom: 1px solid var(--border-color);"></div>
+                    <div class="color-info">
+                        <h4>White Containers</h4>
+                        <p>#ffffff (Cards & Forms)</p>
+                    </div>
+                </div>
+                <div class="color-card interactive-element">
+                    <div class="color-swatch" style="background-color: var(--text-primary);"></div>
+                    <div class="color-info">
+                        <h4>Texto Primário</h4>
+                        <p>#18181b (Seriedade)</p>
+                    </div>
+                </div>
+                <div class="color-card interactive-element">
+                    <div class="color-swatch" style="background-color: var(--text-secondary);"></div>
+                    <div class="color-info">
+                        <h4>Texto Secundário</h4>
+                        <p>#52525b</p>
+                    </div>
+                </div>
+                <div class="color-card interactive-element">
+                    <div class="color-swatch" style="background-color: var(--accent-color);"></div>
+                    <div class="color-info">
+                        <h4>Acento Corporativo</h4>
+                        <p>#2563eb (Links/Ações)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 Componentes -->
+        <section class="reveal">
+            <div class="section-header">
+                <span>03</span>
+                <h2>Componentes UI & Interação</h2>
+            </div>
+            
+            <div style="margin-bottom: 4rem;">
+                <h3 style="margin-bottom: 1rem;">Botões c/ Efeito Magnético</h3>
+                <p class="type-p-regular" style="margin-bottom: 2rem; max-width: 600px;">Passe o mouse por cima e observe a atração magnética e a transição limpa de cores. Detalhes que entregam o tão falado fator "WOW".</p>
+                <div class="btn-wrapper">
+                    <!-- Envoltório para captura de movimento magnético -->
+                    <div class="magnetic-wrap">
+                        <a href="#" class="btn btn-primary interactive-element">Solicitar Orçamento</a>
+                    </div>
+                    <div class="magnetic-wrap">
+                        <a href="#" class="btn btn-secondary interactive-element">Ver Projetos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 4rem;">
+                <h3 style="margin-bottom: 1rem;">Glassmorphism & Cards Limpos</h3>
+                <div class="cards-grid">
+                    <div class="ui-card interactive-element">
+                        <div class="card-icon">01</div>
+                        <h4 style="font-size: 1.25rem;">Web Design</h4>
+                        <p class="type-p-regular">Criação de interfaces elegantes, responsivas e amigáveis para seu app.</p>
+                    </div>
+                    <div class="ui-card interactive-element">
+                        <div class="card-icon">02</div>
+                        <h4 style="font-size: 1.25rem;">Development</h4>
+                        <p class="type-p-regular">Código limpo, arquitetura escalável e SEO injetado no cerne do projeto.</p>
+                    </div>
+                    <div class="ui-card interactive-element">
+                        <div class="card-icon">03</div>
+                        <h4 style="font-size: 1.25rem;">E-Commerce</h4>
+                        <p class="type-p-regular">Venda seus produtos digitalmente com integração contínua de cartões e PIX.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom: 1rem;">Formulários de Alta Qualidade</h3>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="form-label">Nome Completo</label>
+                        <input type="text" class="form-input interactive-element" placeholder="Ex: John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Profissional</label>
+                        <input type="email" class="form-input interactive-element" placeholder="john@empresa.com">
+                    </div>
+                    <div class="magnetic-wrap" style="margin-top: 0.5rem; width: 100%;">
+                        <button class="btn btn-primary interactive-element" style="width: 100%;">Absorver Dados</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 Dark Mode "Fontes puxando para o Branco" -->
+        <section class="reveal">
+            <div class="section-header">
+                <span>04</span>
+                <h2>Contraste & Credibilidade</h2>
+            </div>
+            <div class="dark-section interactive-element">
+                <h2>Tecnologia que Transforma</h2>
+                <div style="height: 1rem;"></div>
+                <!-- Exemplo da fonte esbranquiçada / puxando para o branco destacada da instrução -->
+                <p>Em seções de alto impacto, revertemos o fundo e trazemos as <span style="color: #ffffff; font-weight: 600;">fontes puxando para o branco puro</span>. Destaca o profissionalismo, instiga a leitura e causa disrupção na UI mantendo total legibilidade e clareza direcional.</p>
+            </div>
+            <div style="height: 3rem;"></div>
+        </section>
+        
+    </main>
+
+    <script>
+        // ----------------------------------------------------
+        // CÓDIGO JS - EFEITOS ESPECIAIS & INTERAÇÕES
+        // ----------------------------------------------------
+
+        // 1. Cursor Customizado Inverso
+        const cursor = document.querySelector('.custom-cursor');
+        const interactiveElements = document.querySelectorAll('.interactive-element, a, button, input');
+
+        document.addEventListener('mousemove', (e) => {
+            // Animação leve de delay no cursor
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // 2. Efeito de Botão Magnético
+        const magneticElements = document.querySelectorAll('.magnetic-wrap');
+        
+        magneticElements.forEach((el) => {
+            el.addEventListener('mousemove', (e) => {
+                const position = el.getBoundingClientRect();
+                // Calcula movimentação do botão relativa ao centro do elemento pai
+                const x = e.clientX - position.left - position.width / 2;
+                const y = e.clientY - position.top - position.height / 2;
+                
+                el.children[0].style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.children[0].style.transform = `translate(0px, 0px)`;
+                el.children[0].style.transition = `transform 0.5s ease`;
+            });
+            
+            el.addEventListener('mouseenter', () => {
+                el.children[0].style.transition = `none`;
+            });
+        });
+
+        // 3. Revelação Suave dos Elementos na Rolagem (Scroll Animations)
+        const reveals = document.querySelectorAll('.reveal');
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Para que não repita de forma intrusiva (embora para testar seja legal deixar,
+                    // eu vou manter para que faça a animação apenas ao entrar na tela pela primeira vez)
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        reveals.forEach(reveal => {
+            sectionObserver.observe(reveal);
+        });
+    </script>
+</body>
+</html>
+

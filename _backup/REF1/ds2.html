@@ -1,0 +1,704 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System - Alture & Forma Studio Inspired</title>
+    
+    <!-- Google Fonts: Inter as the "serious" font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --bg-light: #F9FAFB;
+            --bg-white: #FFFFFF;
+            --bg-dark: #0A0A0B;
+            --text-dark: #18181B; /* Serious, deep dark grey */
+            --text-muted: #A1A1AA; /* "Puxando pro branco"/Grey for less emphasis */
+            --text-light: #FAFAFA; /* Actually close to white for dark backgrounds */
+            --accent: #E4E4E7;
+            --border: #E4E4E7;
+            --border-dark: #27272A;
+            
+            /* Typography */
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+            
+            /* Animations */
+            --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.3s ease;
+        }
+
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            overflow-x: hidden;
+            /* Hide default cursor to use custom cursor */
+            cursor: none; 
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            background-color: var(--text-dark);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width var(--transition-fast), height var(--transition-fast), background-color var(--transition-fast);
+        }
+        .custom-cursor.active {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(24, 24, 27, 0.1);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(24, 24, 27, 0.2);
+        }
+
+        /* Layout */
+        .ds-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .ds-sidebar {
+            width: 280px;
+            background-color: var(--bg-white);
+            border-right: 1px solid var(--border);
+            padding: var(--space-md);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .ds-sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-lg);
+        }
+        .ds-sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .ds-sidebar-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color var(--transition-fast);
+            cursor: none; /* Custom cursor fallback */
+        }
+        .ds-sidebar-link:hover {
+            color: var(--text-dark);
+        }
+
+        /* Main Content */
+        .ds-content {
+            flex: 1;
+            padding: var(--space-lg) 10%;
+        }
+
+        .ds-section {
+            margin-bottom: var(--space-xl);
+        }
+        .ds-section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--space-xs);
+        }
+
+        /* Typography */
+        .h-display { font-size: 5rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: var(--space-sm); }
+        .h-1 { font-size: 3.5rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: var(--space-sm); }
+        .h-2 { font-size: 2.5rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: var(--space-sm); }
+        .h-3 { font-size: 1.75rem; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; margin-bottom: var(--space-xs); }
+        .p-large { font-size: 1.25rem; font-weight: 400; color: var(--text-muted); margin-bottom: var(--space-md); max-width: 600px;}
+        .p-base { font-size: 1rem; font-weight: 400; margin-bottom: var(--space-xs); }
+        .p-small { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
+
+        /* Colors Grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-md);
+        }
+        .color-swatch {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .color-box {
+            height: 100px;
+            width: 100%;
+        }
+        .color-details {
+            padding: var(--space-xs);
+            background: var(--bg-white);
+        }
+        .color-name { font-weight: 600; font-size: 0.875rem; }
+        .color-hex { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Component: Tag/Label */
+        .tag-link-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: var(--space-xs);
+        }
+        .tag-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-dark);
+            border-radius: 50%;
+        }
+        .tag-link {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        .tag-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--accent);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn-flex-row {
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-animated {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: var(--bg-dark);
+            color: var(--bg-white);
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .nav-text-outer {
+            height: 1.25em;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-text-wrap {
+            transition: transform var(--transition-smooth);
+            display: block;
+        }
+        .nav-text-wrap._02 {
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
+
+        .btn-icon-outer {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .btn-icon-wrap {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            transition: transform var(--transition-smooth);
+        }
+        .btn-icon-wrap._01 { transform: translateX(0%); }
+        .btn-icon-wrap._02 { transform: translateX(-150%); }
+
+        .btn-animated:hover .nav-text-wrap._01 { transform: translateY(-100%); }
+        .btn-animated:hover .nav-text-wrap._02 { transform: translateY(-100%); }
+        .btn-animated:hover .btn-icon-wrap._01 { transform: translateX(150%); }
+        .btn-animated:hover .btn-icon-wrap._02 { transform: translateX(0%); }
+
+        /* Secondary Button (Outline Gradient Glow) */
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 32px;
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-dark);
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            transition: border-color var(--transition-smooth);
+            cursor: none;
+        }
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(0,0,0,0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 0;
+        }
+        .btn-outline:hover {
+            border-color: rgba(0,0,0,0.3);
+        }
+        .btn-outline:hover::before {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(5);
+        }
+        .btn-outline span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            padding: var(--space-md) 0;
+            background: var(--bg-dark);
+            color: var(--bg-white);
+            display: flex;
+            border-radius: 24px;
+        }
+        .marquee-inner {
+            display: flex;
+            animation: marquee 15s linear infinite;
+        }
+        .marquee-text {
+            font-size: 3rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            padding-right: 4rem;
+            letter-spacing: -0.02em;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+        }
+        .card-project {
+            background: var(--bg-white);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform var(--transition-smooth);
+            cursor: none;
+            border: 1px solid var(--border);
+        }
+        .card-project-img {
+            width: 100%;
+            height: 240px;
+            background: #E0E0E0;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-project-img::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity var(--transition-smooth);
+        }
+        .card-project:hover .card-project-img::after {
+            opacity: 1;
+        }
+        .card-project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-smooth);
+        }
+        .card-project:hover {
+            transform: translateY(-8px);
+        }
+        .card-project:hover .card-project-img img {
+            transform: scale(1.05);
+        }
+        .card-content {
+            padding: var(--space-sm);
+        }
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        /* Testimonial Form (Progressive glassmorphism) */
+        .card-testimonial {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            padding: var(--space-md);
+            border-radius: 16px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            cursor: none;
+        }
+        .stars {
+            color: #FFB650;
+            margin-bottom: var(--space-sm);
+            font-size: 1.25rem;
+        }
+        .quote {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: var(--space-md);
+            color: var(--text-dark);
+        }
+        .author-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: var(--space-sm);
+        }
+        .author-name { font-weight: 600; font-size: 0.875rem; }
+        .author-role { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;}
+
+        /* Dark Mode Section (Satisfying 'fontes puxando para o branco' strictly) */
+        .ds-dark-section {
+            background: var(--bg-dark);
+            color: var(--text-light); /* Pulling to white */
+            padding: var(--space-lg);
+            border-radius: 24px;
+            margin-top: var(--space-lg);
+        }
+        .ds-dark-section .ds-section-title {
+            color: var(--text-muted);
+            border-color: var(--border-dark);
+        }
+        .ds-dark-section .p-large {
+            color: var(--text-muted);
+        }
+        .ds-dark-section .btn-outline {
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text-light);
+        }
+        .ds-dark-section .btn-outline:hover {
+            border-color: rgba(255,255,255,0.5);
+        }
+        .ds-dark-section .btn-outline::before {
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        /* Nav Example */
+        .nav-example {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            border-radius: 100px;
+            margin-bottom: var(--space-md);
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: none;
+        }
+        .nav-link.has-hover .nav-text-outer {
+            height: 1.25em;
+        }
+        .nav-link:hover .nav-text-wrap._01 { transform: translateY(-100%); }
+        .nav-link:hover .nav-text-wrap._02 { transform: translateY(-100%); }
+
+    </style>
+</head>
+<body>
+
+    <div class="custom-cursor"></div>
+
+    <div class="ds-layout">
+        <!-- Sidebar -->
+        <aside class="ds-sidebar">
+            <div class="ds-sidebar-logo">Forma UI.</div>
+            <nav class="ds-sidebar-nav">
+                <a href="#typography" class="ds-sidebar-link">Typography</a>
+                <a href="#colors" class="ds-sidebar-link">Colors</a>
+                <a href="#components" class="ds-sidebar-link">Components</a>
+                <a href="#buttons" class="ds-sidebar-link">Buttons</a>
+                <a href="#animations" class="ds-sidebar-link">Animations</a>
+                <a href="#dark-mode" class="ds-sidebar-link">Dark Mode</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ds-content">
+            
+            <div class="ds-section">
+                <h1 class="h-1">Design System</h1>
+                <p class="p-large">Um portal de componentes digitais moldado para passar credibilidade, detalhismo e um aspecto premium. Com base clara e elementos de contraste estratégico.</p>
+            </div>
+
+            <!-- Typography -->
+            <div id="typography" class="ds-section">
+                <div class="ds-section-title">01. Tipografia</div>
+                <div class="tag-link-wrap">
+                    <div class="tag-dot"></div>
+                    <div class="tag-link">Inter — Seriedade e Precisão</div>
+                </div>
+                <br><br>
+                <div class="h-display">Display Text</div>
+                <div class="h-1">Heading 1</div>
+                <div class="h-2">Heading 2</div>
+                <div class="h-3">Heading 3</div>
+                <p class="p-large">"O design não é apenas o que parece e o que se sente. O design é como funciona." Uma tipografia clara que guia o olhar com conforto estrutural e legibilidade imaculada.</p>
+                <p class="p-base">Parágrafo base para artigos, informações contínuas, garantindo alta retenção de leitura em fundos claros.</p>
+            </div>
+
+            <!-- Colors -->
+            <div id="colors" class="ds-section">
+                <div class="ds-section-title">02. Cores</div>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-box" style="background-color: #F9FAFB;"></div>
+                        <div class="color-details">
+                            <div class="color-name">Fundo Claro</div>
+                            <div class="color-hex">#F9FAFB</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-box" style="background-color: #FFFFFF;"></div>
+                        <div class="color-details">
+                            <div class="color-name">Surface</div>
+                            <div class="color-hex">#FFFFFF</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-box" style="background-color: #18181B;"></div>
+                        <div class="color-details">
+                            <div class="color-name">Texto Escuro</div>
+                            <div class="color-hex">#18181B</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-box" style="background-color: #A1A1AA;"></div>
+                        <div class="color-details">
+                            <div class="color-name">Texto Muted</div>
+                            <div class="color-hex">#A1A1AA</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-box" style="background-color: #0A0A0B;"></div>
+                        <div class="color-details">
+                            <div class="color-name">Night Element</div>
+                            <div class="color-hex">#0A0A0B</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components (Cards, Nav) -->
+            <div id="components" class="ds-section">
+                <div class="ds-section-title">03. Componentes UI</div>
+                
+                <h3 class="h-3">Navigation</h3>
+                <div class="nav-example">
+                    <div style="font-weight: 700; font-size: 1.25rem;">Agency®</div>
+                    <div class="nav-links">
+                        <a href="#" class="nav-link has-hover">
+                            <div class="nav-text-outer">
+                                <span class="nav-text-wrap _01">Home</span>
+                                <span class="nav-text-wrap _02">Home</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-link has-hover">
+                            <div class="nav-text-outer">
+                                <span class="nav-text-wrap _01">Studio</span>
+                                <span class="nav-text-wrap _02">Studio</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-link has-hover">
+                            <div class="nav-text-outer">
+                                <span class="nav-text-wrap _01">Work</span>
+                                <span class="nav-text-wrap _02">Work</span>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="#" class="btn-animated" style="padding: 10px 24px; font-size: 0.875rem;">
+                        <span>Let's talk</span>
+                    </a>
+                </div>
+
+                <br><br>
+                <h3 class="h-3">Cards</h3>
+                <div class="cards-grid">
+                    <!-- Project Card -->
+                    <div class="card-project">
+                        <div class="card-project-img">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600" alt="Website Mockup">
+                        </div>
+                        <div class="card-content">
+                            <h4 class="h-3" style="margin-bottom: 0;">Lumina Finance</h4>
+                            <div class="card-tags">
+                                <div class="tag-badge">Web Design</div>
+                                <div class="tag-badge">Development</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial Card -->
+                    <div class="card-testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="quote">"Working with them felt less like hiring a design agency and more like gaining a strategic partner forever. Unforgettable quality."</p>
+                        <div class="author-box">
+                            <div>
+                                <div class="author-name">Harold Mercer</div>
+                                <div class="author-role">Investor at Solence</div>
+                            </div>
+                            <div class="tag-link">[01]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div id="buttons" class="ds-section">
+                <div class="ds-section-title">04. Interactions & Botões</div>
+                <div class="btn-flex-row">
+                    <!-- Animated Button with arrow slide -->
+                    <a href="#" class="btn-animated hover-target">
+                        <div class="nav-text-outer">
+                            <span class="nav-text-wrap _01">Explore our work</span>
+                            <span class="nav-text-wrap _02">Explore our work</span>
+                        </div>
+                        <div class="btn-icon-outer">
+                            <span class="btn-icon-wrap _01">
+                                <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20"><path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path></svg>
+                            </span>
+                            <span class="btn-icon-wrap _02">
+                                <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Outline glow button -->
+                    <a href="#" class="btn-outline hover-target">
+                        <span>Secondary Action</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Animations / Marquee -->
+            <div id="animations" class="ds-section">
+                <div class="ds-section-title">05. Animações Hype</div>
+                <div class="marquee-container">
+                    <div class="marquee-inner">
+                        <div class="marquee-text">SCROLL TO REVEAL — </div>
+                        <div class="marquee-text">SCROLL TO REVEAL — </div>
+                        <div class="marquee-text">SCROLL TO REVEAL — </div>
+                        <div class="marquee-text">SCROLL TO REVEAL — </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dark Mode Component -->
+            <div id="dark-mode" class="ds-dark-section">
+                <div class="ds-section-title">06. Elementos Noturnos (Fontes Puxando p/ Branco)</div>
+                <h2 class="h-2">Credibilidade em Alto Contraste.</h2>
+                <p class="p-large" style="max-width: 800px;">
+                    Para as sessões onde a marca precisa gritar sofisticação, utilizamos "fundos muito escuros e fontes que puxam para o branco". Esta variação traz um requinte inigualável para apresentações de portfólio.
+                </p>
+                <div class="btn-flex-row" style="margin-top: var(--space-md);">
+                    <a href="#" class="btn-animated hover-target" style="background: var(--bg-white); color: var(--bg-dark);">
+                        <div class="nav-text-outer">
+                            <span class="nav-text-wrap _01">Start Project</span>
+                            <span class="nav-text-wrap _02">Start Project</span>
+                        </div>
+                    </a>
+                    <a href="#" class="btn-outline hover-target">
+                        <span>Learn More</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Custom Mouse Cursor Script
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+        });
+
+        // Add 'active' class on hover over interactive elements
+        const hoverTargets = document.querySelectorAll('a, button, .hover-target');
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
+

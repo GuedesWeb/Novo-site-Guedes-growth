@@ -1,4 +1,4 @@
-﻿// ── Modal Portfolio ──
+// ── Modal Portfolio ──
     function openModal(url, event) {
         if(event) event.preventDefault();
         document.getElementById('modal-iframe').src = url;
@@ -75,4 +75,50 @@
             }
             last = cur;
         });
+
+        // ── Drag to scroll (Feedbacks) ──
+        const track = document.querySelector('.feedback-track');
+        if (track) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            track.addEventListener('mousedown', (e) => {
+                isDown = true;
+                track.style.cursor = 'grabbing';
+                track.style.scrollSnapType = 'none'; // Disable snap temporarily while dragging
+                startX = e.pageX - track.offsetLeft;
+                scrollLeft = track.scrollLeft;
+            });
+            track.addEventListener('mouseleave', () => {
+                isDown = false;
+                track.style.cursor = 'grab';
+                track.style.scrollSnapType = 'x mandatory';
+            });
+            track.addEventListener('mouseup', () => {
+                isDown = false;
+                track.style.cursor = 'grab';
+                track.style.scrollSnapType = 'x mandatory';
+            });
+            track.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - track.offsetLeft;
+                const walk = (x - startX) * 2; // Scroll-fast multiplier
+                track.scrollLeft = scrollLeft - walk;
+            });
+
+            // ── Track Scroll Progress ──
+            const progressBar = document.querySelector('.feedback-progress-bar');
+            if (progressBar) {
+                track.addEventListener('scroll', () => {
+                    const maxScroll = track.scrollWidth - track.clientWidth;
+                    if (maxScroll > 0) {
+                        const progress = track.scrollLeft / maxScroll;
+                        // O width da barra é 33.33% (1/3). Então ela pode se mover os outros 2/3 (aprox 200%) para preencher a track
+                        progressBar.style.transform = `translateX(${progress * 200}%)`;
+                    }
+                });
+            }
+        }
     });

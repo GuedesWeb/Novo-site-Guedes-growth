@@ -123,7 +123,7 @@
 
         /* ── MARQUEE ── */
         .marquee-wrap{overflow:hidden;padding:1.75rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-        .marquee-track{display:flex;white-space:nowrap;animation:scroll-marquee 28s linear infinite;}
+        .marquee-track{display:flex;white-space:nowrap;animation:scroll-marquee 36s linear infinite;}
         .marquee-item{font-size:clamp(1.25rem,2.5vw,2rem);font-weight:700;letter-spacing:-.03em;padding:0 2rem;display:flex;align-items:center;gap:2rem;color:var(--text-tertiary);}
         .marquee-item span{color:var(--accent);font-size:.75em;}
         @keyframes scroll-marquee{100%{transform:translateX(-50%);}}

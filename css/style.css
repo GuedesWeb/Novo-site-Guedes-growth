@@ -21,8 +21,11 @@
             --duration: 0.6s;
         }
         *{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;}
-        body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text-primary);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+        /* overflow-x em html E body: sozinho no body o Safari do iOS ainda deixa arrastar de lado.
+           A 2a declaracao (clip) sobrescreve nos navegadores modernos e evita criar area rolavel. */
+        html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip;}
+        body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text-primary);-webkit-font-smoothing:antialiased;width:100%;overflow-x:hidden;overflow-x:clip;}
+        img,svg,video,iframe{max-width:100%;}
 
         /* ── PRELOADER ── */
         #preloader { position: fixed; inset: 0; z-index: 9999; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; }
@@ -223,7 +226,8 @@
         footer{background:var(--bg-dark);padding:3rem 0;border-top:1px solid var(--border-dark);}
         .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
         .footer-brand img{height:26px;opacity:.6;filter:brightness(10);}
-        .footer-links{display:flex;gap:2rem;}
+        /* sem flex-wrap os 5 links travavam a pagina em 394px de largura minima */
+        .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem 2rem;}
         .footer-link{font-size:.8125rem;color:var(--text-white-muted);text-decoration:none;transition:color .3s;}
         .footer-link:hover{color:var(--text-white);}
         .footer-copy{font-size:.8125rem;color:var(--text-white-muted);}
@@ -235,4 +239,12 @@
             .cta-band{padding:3rem 1.75rem;}
             .stats-row{gap:2rem;}
             .footer-inner{flex-direction:column;text-align:center;}
+            .footer-links{gap:.75rem 1.25rem;}
+            .footer-copy{max-width:100%;overflow-wrap:break-word;}
+        }
+
+        /* telas estreitas: o headline nao cabia e a ultima letra era cortada na borda */
+        @media(max-width:600px){
+            .hero-huge-text{font-size:clamp(3.25rem,13vw,12rem);}
+            .hero-huge-text.indent{padding-left:6vw;}
         }
